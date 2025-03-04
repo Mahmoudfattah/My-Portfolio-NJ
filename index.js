@@ -32,11 +32,11 @@ document.getElementById("contactForm").addEventListener("submit", async function
 
     try {
         const response = await fetch("https://my-portfolio-nj-production.up.railway.app/contact", { 
-
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
+
 
         const result = await response.json();
 
