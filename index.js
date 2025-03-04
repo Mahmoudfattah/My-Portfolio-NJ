@@ -27,7 +27,7 @@ menuIcon.onclick = () => {
 document.getElementById("contactForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // منع إعادة تحميل الصفحة
 
-    const formData = new FormData(this);
+    const formData = new FormData(this); 
     const data = Object.fromEntries(formData.entries());
 
     try {
@@ -36,29 +36,29 @@ document.getElementById("contactForm").addEventListener("submit", async function
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
-
+        
+        
 
         const result = await response.json();
 
         if (result.success) {
-            showToast("✅ تم إرسال الرسالة بنجاح!", "success");
-            this.reset(); // إعادة تعيين النموذج بعد الإرسال
+            showToast("✅ Message Send Successfully", "success");
+            this.reset(); // إعادة تعيين النموذج
         } else {
             showToast("❌ فشل في إرسال الرسالة!", "error");
         }
     } catch (error) {
-        showToast("❌ خطأ في الاتصال!", "error");
+        showToast("❌ حدث خطأ في الاتصال!", "error");
     }
 });
 
-// دالة لإظهار الإشعارات (Toast Notification)
+// دالة لإظهار الإشعارات
 function showToast(message, type) {
     const toast = document.createElement("div");
     toast.className = `toast ${type}`;
     toast.textContent = message;
 
     document.body.appendChild(toast);
-    
     setTimeout(() => {
         toast.remove();
     }, 3000);
