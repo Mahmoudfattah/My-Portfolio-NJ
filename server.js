@@ -3,10 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors'); // استيراد CORS
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// السماح بالطلبات من أي نطاق (CORS)
+app.use(cors());
 
 // الاتصال بقاعدة بيانات MongoDB Atlas باستخدام متغيرات البيئة
 mongoose.connect(process.env.MONGO_URI, {
@@ -32,6 +35,11 @@ app.use(bodyParser.json());
 // جعل مجلد "public" متاحًا للسيرفر
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ✅ **إضافة المسار `/` لإصلاح خطأ `Cannot GET /`**
+app.get("/", (req, res) => {
+    res.send("🚀 السيرفر يعمل بنجاح!");
+});
+
 // استقبال بيانات النموذج وحفظها في قاعدة البيانات
 app.post('/contact', async (req, res) => {
   try {
@@ -45,6 +53,7 @@ app.post('/contact', async (req, res) => {
   }
 });
 
+// تشغيل السيرفر
 app.listen(PORT, () => {
   console.log(`🚀 السيرفر يعمل على http://0.0.0.0:${PORT}`);
 });
