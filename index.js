@@ -36,9 +36,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
-        git add .
-        git commit -m "Fix: Updated contact form API endpoint"
-                
+        
         
 
         const result = await response.json();
@@ -65,44 +63,3 @@ function showToast(message, type) {
         toast.remove();
     }, 3000);
 }
-
-// document.querySelector("a").addEventListener("click", function(event) {
-//     window.location.href = "https://github.com/Mahmoudfattah";
-// });
-// document.querySelector("a").addEventListener("click", function(event) {
-//     event.preventDefault(); // Prevents JS from blocking navigation
-//     window.open(this.href, "_blank"); // Opens in a new tab
-// });
-
-
-// // تحديد العناصر من الصفحة
-// let menuIcon = document.querySelector('#menu-icon'); // زر القائمة
-// let navbar = document.querySelector('.navbar'); // شريط التنقل
-// let sections = document.querySelectorAll('section'); // جميع الأقسام
-// let navLinks = document.querySelectorAll('header nav a'); // روابط شريط التنقل
-
-// // وظيفة تغيير الرابط النشط أثناء التمرير
-// window.onscroll = () => {
-//     let scrollPosition = window.scrollY; // الحصول على موضع التمرير الحالي
-
-//     sections.forEach(section => {
-//         let sectionTop = section.offsetTop - 150; // تعويض بسيط لتحسين الرؤية
-//         let sectionHeight = section.offsetHeight;
-//         let sectionId = section.getAttribute('id');
-
-//         // التحقق مما إذا كان القسم داخل نطاق العرض
-//         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-//             // إزالة التفعيل من جميع الروابط
-//             navLinks.forEach(link => link.classList.remove('active'));
-
-//             // تفعيل الرابط الخاص بالقسم الحالي
-//             document.querySelector(`header nav a[href*=${sectionId}]`).classList.add('active');
-//         }
-//     });
-// };
-
-// // وظيفة إظهار وإخفاء شريط التنقل عند الضغط على أيقونة القائمة
-// menuIcon.onclick = () => {
-//     menuIcon.classList.toggle('bx-x'); // تغيير أيقونة القائمة
-//     navbar.classList.toggle('active'); // إظهار أو إخفاء شريط التنقل
-// };
