@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 
 // الاتصال بقاعدة بيانات MongoDB Atlas باستخدام متغيرات البيئة
 mongoose.connect(process.env.MONGO_URI, {
@@ -45,6 +46,7 @@ app.post('/contact', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 السيرفر يعمل على http://localhost:${PORT}`);
+  console.log(`🚀 السيرفر يعمل على http://0.0.0.0:${PORT}`);
 });
+
 console.log("MONGO_URI:", process.env.MONGO_URI);
