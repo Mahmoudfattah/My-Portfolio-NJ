@@ -31,11 +31,15 @@ document.getElementById("contactForm").addEventListener("submit", async function
     const data = Object.fromEntries(formData.entries());
 
     try {
-        const response = await fetch("/contact", {
+        const response = await fetch("https://my-portfolio-nj-production.up.railway.app/contact", { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
+        git add .
+        git commit -m "Fix: Updated contact form API endpoint"
+                
+        
 
         const result = await response.json();
 
