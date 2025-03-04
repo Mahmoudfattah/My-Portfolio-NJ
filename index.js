@@ -27,38 +27,37 @@ menuIcon.onclick = () => {
 document.getElementById("contactForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // منع إعادة تحميل الصفحة
 
-    const formData = new FormData(this); 
+    const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
     try {
-        const response = await fetch("https://my-portfolio-nj-production.up.railway.app/contact", { 
+        const response = await fetch("http://localhost:3000/contact", { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
-        
-        
 
         const result = await response.json();
 
         if (result.success) {
-            showToast("✅ Message Send Successfully", "success");
-            this.reset(); // إعادة تعيين النموذج
+            showToast("✅ تم إرسال الرسالة بنجاح!", "success");
+            this.reset(); // إعادة تعيين النموذج بعد الإرسال
         } else {
             showToast("❌ فشل في إرسال الرسالة!", "error");
         }
     } catch (error) {
-        showToast("❌ حدث خطأ في الاتصال!", "error");
+        showToast("❌ خطأ في الاتصال!", "error");
     }
 });
 
-// دالة لإظهار الإشعارات
+// دالة لإظهار الإشعارات (Toast Notification)
 function showToast(message, type) {
     const toast = document.createElement("div");
     toast.className = `toast ${type}`;
     toast.textContent = message;
 
     document.body.appendChild(toast);
+    
     setTimeout(() => {
         toast.remove();
     }, 3000);
