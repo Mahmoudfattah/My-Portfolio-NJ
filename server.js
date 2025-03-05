@@ -4,26 +4,28 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+
+const app = express(); // ✅ تعريف `app` قبل استخدامه
+const PORT = process.env.PORT || 3000;
+
+// ✅ تفعيل CORS مع تحديد `origin`
 app.use(cors({
-  origin: '*', // السماح لجميع النطاقات
-  methods: ['GET', 'POST'],
+  origin: 'https://mahmoudfattah.github.io', // السماح فقط لموقعك
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
 
+// ✅ معالجة طلبات Preflight
+app.options('*', cors());
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// السماح بالطلبات من أي نطاق (CORS)
-app.use(cors());
-
-// الاتصال بقاعدة بيانات MongoDB Atlas باستخدام متغيرات البيئة
+// ✅ الاتصال بقاعدة بيانات MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
+}).then(() => console.log('✅ تم الاتصال بقاعدة البيانات'))
+  .catch(err => console.error('❌ فشل الاتصال بقاعدة البيانات:', err));
 
-// التحقق من نجاح أو فشل الاتصال بقاعدة البيانات
+// ✅ الاستماع لأخطاء الاتصال بقاعدة البيانات
 mongoose.connection.on('error', err => {
     console.error("❌ خطأ في الاتصال بقاعدة البيانات:", err);
 });
@@ -31,7 +33,7 @@ mongoose.connection.once('open', () => {
     console.log("✅ تم الاتصال بقاعدة البيانات بنجاح!");
 });
 
-// إنشاء نموذج (Schema) للرسائل
+// ✅ إنشاء نموذج Schema للرسائل
 const messageSchema = new mongoose.Schema({
   name: String,
   email: String,
@@ -39,21 +41,21 @@ const messageSchema = new mongoose.Schema({
   subject: String,
   message: String
 });
-
 const Message = mongoose.model('Message', messageSchema);
 
+// ✅ إضافة Body Parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// جعل مجلد "public" متاحًا للسيرفر
+// ✅ جعل مجلد `public` متاحًا للسيرفر
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ **إضافة المسار `/` لإصلاح خطأ `Cannot GET /`**
+// ✅ إضافة المسار `/` لإصلاح خطأ `Cannot GET /`
 app.get("/", (req, res) => {
     res.send("🚀 السيرفر يعمل بنجاح!");
 });
 
-// استقبال بيانات النموذج وحفظها في قاعدة البيانات
+// ✅ استقبال بيانات النموذج وحفظها في قاعدة البيانات
 app.post('/contact', async (req, res) => {
   try {
     const newMessage = new Message(req.body);
@@ -66,10 +68,12 @@ app.post('/contact', async (req, res) => {
   }
 });
 
-// تشغيل السيرفر
+// ✅ تشغيل السيرفر
 app.listen(PORT, () => {
   console.log(`🚀 السيرفر يعمل على http://0.0.0.0:${PORT}`);
 });
 
-// طباعة متغير MONGO_URI للتحقق منه
-console.log("MONGO_URI:", process.env.MONGO_URI);
+// ✅ طباعة MONGO_URI في بيئة التطوير فقط
+if (process.env.NODE_ENV === 'development') {
+  console.log("MONGO_URI:", process.env.MONGO_URI);
+}
