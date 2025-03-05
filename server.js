@@ -3,7 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors'); // استيراد CORS
+const cors = require('cors');
+app.use(cors({
+  origin: '*', // السماح لجميع النطاقات
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
