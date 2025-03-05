@@ -8,15 +8,22 @@ const cors = require('cors'); // استيراد CORS
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ تفعيل CORS قبل أي Middleware آخر
+// السماح بالطلبات من أي نطاق (CORS)
 app.use(cors());
 
 // الاتصال بقاعدة بيانات MongoDB Atlas باستخدام متغيرات البيئة
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('✅ تم الاتصال بقاعدة البيانات'))
-  .catch(err => console.error('❌ فشل الاتصال بقاعدة البيانات:', err));
+});
+
+// التحقق من نجاح أو فشل الاتصال بقاعدة البيانات
+mongoose.connection.on('error', err => {
+    console.error("❌ خطأ في الاتصال بقاعدة البيانات:", err);
+});
+mongoose.connection.once('open', () => {
+    console.log("✅ تم الاتصال بقاعدة البيانات بنجاح!");
+});
 
 // إنشاء نموذج (Schema) للرسائل
 const messageSchema = new mongoose.Schema({
@@ -29,7 +36,6 @@ const messageSchema = new mongoose.Schema({
 
 const Message = mongoose.model('Message', messageSchema);
 
-// ✅ تفعيل Body Parser بعد CORS
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -50,7 +56,7 @@ app.post('/contact', async (req, res) => {
     res.json({ success: true, message: 'تم إرسال الرسالة بنجاح!' });
   } catch (error) {
     console.error("❌ خطأ أثناء حفظ البيانات:", error);
-    res.status(500).json({ success: false, message: 'حدث خطأ أثناء الإرسال.' });
+    res.status(500).json({ success: false, message: 'حدث خطأ أثناء الإرسال.', error: error.message });
   }
 });
 
@@ -59,4 +65,5 @@ app.listen(PORT, () => {
   console.log(`🚀 السيرفر يعمل على http://0.0.0.0:${PORT}`);
 });
 
+// طباعة متغير MONGO_URI للتحقق منه
 console.log("MONGO_URI:", process.env.MONGO_URI);
