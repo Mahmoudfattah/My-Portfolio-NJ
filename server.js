@@ -8,7 +8,7 @@ const cors = require('cors'); // استيراد CORS
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// السماح بالطلبات من أي نطاق (CORS)
+// ✅ تفعيل CORS قبل أي Middleware آخر
 app.use(cors());
 
 // الاتصال بقاعدة بيانات MongoDB Atlas باستخدام متغيرات البيئة
@@ -29,6 +29,7 @@ const messageSchema = new mongoose.Schema({
 
 const Message = mongoose.model('Message', messageSchema);
 
+// ✅ تفعيل Body Parser بعد CORS
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
