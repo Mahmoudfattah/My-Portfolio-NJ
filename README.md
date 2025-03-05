@@ -14,9 +14,6 @@ This is a personal portfolio website that showcases my skills, projects, educati
 - HTML5
 - CSS3
 - JavaScript (ES6+)
-- React.js
-- Next.js
-- Tailwind CSS
 - Bootstrap
 - AOS (Animate On Scroll)
 
